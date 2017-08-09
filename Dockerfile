@@ -8,7 +8,8 @@ run apt install -y \
     build-essential \
     g++ \
     cmake \
-    git
+    git \
+    wget
 
 # runtime dependencies
 run apt install -y \
@@ -31,6 +32,12 @@ run apt install -y \
 # build!
 workdir /build
 run git clone https://github.com/SFML/SFML.git
+
+# need to apply a patch
+workdir /build/SFML/
+run wget -O gcc.patch https://gitlab.peach-bun.com/pinion/SFML/commit/3383b4a472f0bd16a8161fb8760cd3e6333f1782.patch
+run git apply gcc.patch
+
 workdir /build/SFML/build
 run cmake ..
 run make install
